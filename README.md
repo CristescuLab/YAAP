@@ -45,7 +45,7 @@ sudo ln -s * /usr/local/bin
 ```
 Then pear, seqkit, and usearch are available to the pipeline.
 
-####Exporting the path
+#### Exporting the path
 If you don't have administrator privileges, you can let the system know to look
  for the executables in the appropriate folder. As before, let's assume that 
  your username is `user1` and that you clone the repository in home. You can 
