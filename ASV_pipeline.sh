@@ -142,9 +142,30 @@ cat ${outdir}/*.lengthfilter.fastq > ${outdir}/all.lengthfilter.fastq
 vsearch --derep_fulllength  ${outdir}/all.lengthfilter.fastq -sizein -sizeout \
 -relabel Uniq -output  ${outdir}/vs_all_lengthfilter.fasta
 
+# execute denoising in full file
+usearch -unoise3 ${outdir}/vs_all_lengthfilter.fasta -zotus \
+${outdir}/all_lengthfilter_zotus_${9}.fasta -minsize ${9} -tabbedout \
+${outdir}/allzotus_lengthfilter_${9}.txt
+
+# Rename to Zotu
+sed -i "s/>O/>Zo/g" ${outdir}/all_lengthfilter_zotus_${9}.fasta
+
+# reannotate each sample
+for i in ${outdir}/*lengthfilter.fastq
+do
+    usearch -fastx_relabel ${i} -prefix `basename ${i%%.lengthfilter.fastq}`_ \
+    -fastqout ${i%%.fastq}_relabel.fastq -keep_annots
+done
+
+# Make database with the joined file
+usearch -makeudb_usearch ${outdir}/all_lengthfilter_zotus_${9}.fasta -output \
+${outdir}/all_lengthfilter_zotus_${9}.udb
+
+
+cat ${outdir}/*lengthfilter_relabel.fastq > ${outdir}/all.lengthfilter_relabel.fastq
 
 # get file_size
-file_size=`du -b ${outdir}/vs_all_lengthfilter.fasta|cut -f1`
+file_size=`du -b ${outdir}/all.lengthfilter_relabel.fastq|cut -f1`
 file_size=$(( file_size / 1000000000 ))
 # Run the unoise3 denoising
 if [[ "$file_size" -gt 3 ]]
@@ -158,39 +179,21 @@ if [[ "$file_size" -gt 3 ]]
         # execute in smaller files
         for i in ${fil}.split/*part_*
         do
-           usearch -unoise3 ${i} -zotus ${i}_zotu -minsize ${9} -tabbedout \
-           ${i}_tab
+            usearch -otutab ${i}  -sample_delim _ \
+            -zotus ${outdir}/all_lengthfilter_zotus_${9}.udb -otutabout \
+            ${outdir}/all_${primer_name}zotutab_${9}.txt -mapout \
+            ${outdir}/all_${primer_name}zmap_${9}.txt
         done
+        # merge them
         # merge the individual otu tables
-        files=`echo *_tab|tr ' ' ','`
-        usearch -otutab_merge ${files} -output ${outdir}/allzotus_lengthfilter_4.txt
+        files=`echo *zotutab_${9}.txt|tr ' ' ','`
+        usearch -otutab_merge ${files} -output ${outdir}/allzotus_lengthfilter_${9}.txt
     else
-        # execute full file
-        usearch -unoise3 ${outdir}/vs_all_lengthfilter.fasta -zotus \
-        ${outdir}/all_lengthfilter_zotus_4.fasta -minsize ${9} -tabbedout \
-        ${outdir}/allzotus_lengthfilter_4.txt
-
+    # execute full
+    # Created the Zotu table with the renamed samples
+    usearch -otutab ${outdir}/all.lengthfilter_relabel.fastq  -sample_delim _ \
+    -zotus ${outdir}/all_lengthfilter_zotus_${9}.udb -otutabout \
+    ${outdir}/all_${primer_name}zotutab_${9}.txt -mapout \
+    ${outdir}/all_${primer_name}zmap_${9}.txt
 fi
-
-# Rename to Zotu
-sed -i "s/>O/>Zo/g" ${outdir}/all_lengthfilter_zotus_4.fasta
-
-# reannotate each sample
-for i in ${outdir}/*lengthfilter.fastq
-do
-    usearch -fastx_relabel ${i} -prefix `basename ${i%%.lengthfilter.fastq}`_ \
-    -fastqout ${i%%.fastq}_relabel.fastq -keep_annots
-done
-
-# Make database with the joined file
-usearch -makeudb_usearch ${outdir}/all_lengthfilter_zotus_4.fasta -output \
-${outdir}/all_lengthfilter_zotus_4.udb
-
-cat ${outdir}/*lengthfilter_relabel.fastq > ${outdir}/all.lengthfilter_relabel.fastq
-
-# Created the Zotu table with the renamed samples
-usearch -otutab ${outdir}/all.lengthfilter_relabel.fastq  -sample_delim _ \
--zotus ${outdir}/all_lengthfilter_zotus_4.udb -otutabout \
-${outdir}/all_${primer_name}zotutab_4.txt -mapout \
-${outdir}/all_${primer_name}zmap_4.txt
 
