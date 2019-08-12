@@ -35,15 +35,19 @@ directory or copy/link the executables to your bin directory.  Alternatively,
 you can install them from scratch in your system.
 
 #### Linking files to your bin directory (REQUIRES ADMIN PRIVILEGES )
-If you don't have administrator privileges, go to [the next section](####exporting-the-path). If you do, 
-you can just copy (`cp`) or symbolically link (`ln -s`). For example, let's say
- that you cloned YAAP to your home directory and let's assume that your 
- username is `user1`. If you are in a linux system you can just type:
+If you don't have administrator privileges, go to [the next section](#exporting-the-path). 
+If you do, you can just copy (`cp`) or symbolically link (`ln -s`). 
+For example, let's say that you cloned YAAP to your home directory and let's 
+assume that your username is `user1`. If you are in a linux system you can just
+ type:
+
 ```
 cd /home/user1/YAAP/executables_linux_64/
 sudo ln -s * /usr/local/bin
 ```
+
 Then pear, seqkit, and usearch are available to the pipeline.
+
 
 #### Exporting the path
 If you don't have administrator privileges, you can let the system know to look
