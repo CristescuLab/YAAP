@@ -102,3 +102,6 @@ the example) and append test to the output files. In the example, the output
 folder will be called `test_outputCOI`.
 
 
+## ISSUES
+If you find any bugs related with the pipeline, please open an issue in the the
+github repo, and add some traceback (error) information.
