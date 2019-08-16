@@ -1,4 +1,8 @@
 cwd=${PWD}
+echo "Preparing usearch"
+mv $1 usearch
+chmod +x usearch
+echo "export PATH=$PATH:$PWD" >> ~/.bashrc
 
 echo "Preparing cutadapt"
 python -m pip install --user --upgrade cutadapt --user
@@ -14,4 +18,4 @@ echo "Setting up seqkit, pear and usearch "
 cd executables_linux_64
 echo "export PATH=$PATH:$PWD" >> ~/.bashrc
 source ~/.bashrc
-
+cd ${cwd}

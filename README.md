@@ -23,6 +23,40 @@ however, vsearch and cutadapt have to be installed locally.
 All the instructions here are only tested in linux systems. You might have to 
 adjust part of it for other operating systems.
 
+#### **The easier (no gurarantees) way**
+I recently added a bash script to install all dependencies for you. It might 
+not work in all systems, but it might be worth given a try. This script assumes
+that you have python3 in your environment ans can be executed as python. If you
+are in a Compute canada cluster, you need to load the `scipy-stack/2018b` 
+module. So let's assume that you want me to walk you though all the 
+installation. Then you need to:
+1. Clone this repository (you need to have git installed):
+```bash
+git clone https://github.com/CristescuLab/YAAP.git
+```
+2. Get into the folder:
+```bash
+cd YAAP
+```
+2.  Because of the licence in usearch I am not allowed to distribute the binary.
+So you will need to visit [https://drive5.com/usearch/download.html]() download 
+the latest version from your email, and place it in this folder (the YAAP 
+folder)
+4. Execute the `install_dependencies.sh` code:
+```bash
+bash install_dependencies.sh
+```
+4. Test that all dependencies work:
+```bash
+cutadapt -h
+vsearch -h
+pear -h
+seqkit -h
+usearch 
+```
+If all of the above commands do not give you errors, you are good to go!!
+
+### **The not so easy, but easy way**
 1. cutadapt: Follow the instructions at [
 https://cutadapt.readthedocs.io/en/stable/installation.html](
 https://cutadapt.readthedocs.io/en/stable/installation.html). If you are using 
