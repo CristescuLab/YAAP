@@ -10,12 +10,13 @@ cd vsearch
 ./configure --prefix=${PWD} --exec-prefix=${PWD}
 make
 cd bin
+chmod +x *
 echo "export PATH=$PATH:$PWD" >> ~/.bashrc
 cd ${cwd}
 echo "Setting up seqkit, pear and usearch "
 mv $1 executables_linux_64/usearch
 cd executables_linux_64
-chmod +x usearch
+chmod +x *
 echo "export PATH=$PATH:$PWD" >> ~/.bashrc
 source ~/.bashrc
 cd ${cwd}
