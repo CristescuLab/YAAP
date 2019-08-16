@@ -40,7 +40,7 @@ cd YAAP
 ```
 2.  Because of the licence in usearch I am not allowed to distribute the binary.
 So you will need to visit [https://drive5.com/usearch/download.html]() download 
-the latest version from your email, and place it in this folder (the YAAP 
+the latest LINUX version from your email, and place it in this folder (the YAAP 
 folder)
 4. Execute the `install_dependencies.sh` code:
 ```bash
