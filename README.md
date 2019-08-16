@@ -44,9 +44,11 @@ the latest version from your email, and place it in this folder (the YAAP
 folder)
 4. Execute the `install_dependencies.sh` code:
 ```bash
-bash install_dependencies.sh
+bash install_dependencies.sh <name of usearch binary>
 ```
-4. Test that all dependencies work:
+You will need to change `<name of usearch binary>` for the actual name of the 
+binary you downloaded from usearch 
+5. Test that all dependencies work:
 ```bash
 cutadapt -h
 vsearch -h
