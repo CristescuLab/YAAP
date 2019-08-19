@@ -11,7 +11,7 @@ cd vsearch
 make
 cd bin
 chmod +x vsearch
-cp vsearch ${PWD}/executables_linux_64/vsearch
+cp vsearch ${cwd}/executables_linux_64/
 cd ${cwd}
 
 echo "Setting up seqkit, pear and usearch "
