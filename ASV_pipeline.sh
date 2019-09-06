@@ -152,7 +152,7 @@ else
         usearch -fastx_uniques ${5}/${sample}.3trimmed.fastq -fastaout \
         ${5}/${sample}.trimmed.derep.fasta -sizeout -threads ${8}
     fi
-fi
+fi}
 # get lenghth distributions
 length_stats ${5}/${sample}.trimmed.derep.fasta ${5}/${6}
 # get stats for all the steps
@@ -162,7 +162,6 @@ echo "Running fastqc"
 fastqc ${5}/${sample}.3trimmed.fastq -o ${5}
 #fastqc ${5}/${sample}.3trimmed.fastq -o ${5}
 echo -e "\n\n"
-}
 
 prog() {
     # Progress bar, courtesy of ilkkachu (stackoverflow)
