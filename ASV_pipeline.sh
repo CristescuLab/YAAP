@@ -117,7 +117,7 @@ echo "Dereplicating"
 usearch -fastx_uniques ${5}/${sample}.3trimmed.fastq -fastaout \
 ${5}/${sample}.trimmed.derep.fasta -sizeout
 echo "Extimating lenghth distributions"
-length__stats ${5}/${sample}.trimmed.derep.fasta ${5}/${6}
+length_stats ${5}/${sample}.trimmed.derep.fasta ${5}/${6}
 echo "estimating stats for all the steps"
 seqkit -j ${8} stats ${5}/*${sample}*.fa* >> ${5}/${6}.stats
 # dereplicate
