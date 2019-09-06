@@ -85,11 +85,15 @@ else
     ${7}_R2.fastq.gz > ${5}/${sample}.log1
 fi
 # Merge reads
-echo -e "\tMerging reads"
+echo "Running cutadapt"
+pear -f ${5}/${sample}.1.fastq.gz -r ${5}/${sample}.2.fastq.gz \
+-o ${5}/${sample}_pear -q 25 -t $9 -s 2 > ${5}/${sample}_pear.log
+echo "Checking if any adapters remain"
 if [[ -s ${5}/${sample}_pear.assembled.fastq ]]
 then
-     echo -e "\t\tFile ${5}/${sample}_pear.assembled.fastq exist and is not empty... Skipping"
+    echo -e "\t\tFile ${5}/${sample}_pear.assembled.fastq exist and is not empty... Skipping"
 else
+    echo -e "\tMerging reads"
     pear -f ${5}/${sample}.1.fastq.gz -r ${5}/${sample}.2.fastq.gz \
     -o ${5}/${sample}_pear -q 25 -t $9 -s 2 > ${5}/${sample}_pear.log
 fi
@@ -98,6 +102,13 @@ echo -e "\tIdentifying remnant primers"
 seqkit -j ${8} locate -d -p "${1}" ${5}/${sample}_pear.assembled.fastq > ${5}/${sample}.fwd
 seqkit -j ${8} locate -d -p "${2}" ${5}/${sample}_pear.assembled.fastq > ${5}/${sample}.rev
 # cut the adapter if they remain
+if [[ $(wc -l <${5}/${sample}.fwd) -ge 2 || $(wc -l <${5}/${sample}.rev) -ge 2 ]]; then
+echo -e  "\tRemoving remaining adapters"
+cutadapt -a "$3" -m $9 -n 2 --too-short-output ${5}/${sample}.short.fastq \
+-o ${5}/${sample}.3trimmed.fastq ${5}/${sample}_pear.assembled.fastq > ${5}/${sample}.log2
+cutadapt -g "${1}" -n 2 -o ${5}/${sample}.5trimmed.fastq \
+${5}/${sample}.3trimmed.fastq > ${outdir}/${sample}.log3; else
+cp ${5}/${sample}_pear.assembled.fastq ${5}/${sample}.3trimmed.fastq
 if [[ $(wc -l <${5}/${sample}.fwd) -ge 2 || $(wc -l <${5}/${sample}.rev) -ge 2 ]]
 then
     echo -e "\t\tRemnant primers found, attempting to remove them"
@@ -109,6 +120,13 @@ else
     echo -e "\t\tNo remnant primers found"
     cp ${5}/${sample}_pear.assembled.fastq ${5}/${sample}.3trimmed.fastq
 fi
+echo "Dereplicating"
+usearch -fastx_uniques ${5}/${sample}.3trimmed.fastq -fastaout \
+${5}/${sample}.trimmed.derep.fasta -sizeout
+echo "Extimating lenghth distributions"
+length__stats ${5}/${sample}.trimmed.derep.fasta ${5}/${6}
+echp "estimating stats for all the steps"
+seqkit -j ${8} stats ${5}/*${sample}*.fa* >> ${5}/${6}.stats
 # dereplicate
 echo -e "\tRemoving duplicate sequences"
 if [[ -s ${5}/${sample}.trimmed.derep.fasta ]]
@@ -140,6 +158,8 @@ length_stats ${5}/${sample}.trimmed.derep.fasta ${5}/${6}
 # get stats for all the steps
 seqkit -j ${8} stats ${5}/*${sample}*.fa* > ${5}/${6}.stats
 # run a fastqc
+echo "Running fastqc"
+fastqc ${5}/${sample}.3trimmed.fastq -o ${5}
 #fastqc ${5}/${sample}.3trimmed.fastq -o ${5}
 echo -e "\n\n"
 }

@@ -56,7 +56,11 @@ pear -h
 seqkit -h
 usearch 
 ```
-If all of the above commands do not give you errors, you are good to go!!
+If all of the above commands do not give you errors, you are good to go!! If you still have errors, try:
+```bash
+source ~/.bashrc
+```
+And then, try again.
 
 ### **The not so easy, but easy way**
 1. cutadapt: Follow the instructions at [
