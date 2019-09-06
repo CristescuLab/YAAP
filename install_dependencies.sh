@@ -16,7 +16,7 @@ cp vsearch ${cwd}/executables_linux_64/
 cd ${cwd}
 
 echo "Setting up seqkit, pear and usearch "
-mv $1 executables_linux_64/usearch
+cp $1 executables_linux_64/usearch
 cd executables_linux_64
 chmod +x *
 echo "export PATH=$PATH:$PWD" >> ${HOME}/.bashrc
