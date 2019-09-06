@@ -77,27 +77,30 @@ ${5}/untrimmed.${sample}.fastq --untrimmed-paired-output \
 ${5}/untrimmed.paired.${sample}.fastq ${7}_R1.fastq.gz \
 ${7}_R2.fastq.gz > ${5}/${sample}.log1
 # Merge reads
+echo "Running cutadapt"
 pear -f ${5}/${sample}.1.fastq.gz -r ${5}/${sample}.2.fastq.gz \
 -o ${5}/${sample}_pear -q 25 -t $9 -s 2 > ${5}/${sample}_pear.log
-# check if adapters still there
+echo "Checking if any adapters remain"
 seqkit -j ${8} locate -d -p "${1}" ${5}/${sample}_pear.assembled.fastq > ${5}/${sample}.fwd
 seqkit -j ${8} locate -d -p "${2}" ${5}/${sample}_pear.assembled.fastq > ${5}/${sample}.rev
 # cut the adapter if they remain
 if [[ $(wc -l <${5}/${sample}.fwd) -ge 2 || $(wc -l <${5}/${sample}.rev) -ge 2 ]]; then
+echo -e  "\tRemoving remaining adapters"
 cutadapt -a "$3" -m $9 -n 2 --too-short-output ${5}/${sample}.short.fastq \
 -o ${5}/${sample}.3trimmed.fastq ${5}/${sample}_pear.assembled.fastq > ${5}/${sample}.log2
 cutadapt -g "${1}" -n 2 -o ${5}/${sample}.5trimmed.fastq \
 ${5}/${sample}.3trimmed.fastq > ${outdir}/${sample}.log3; else
 cp ${5}/${sample}_pear.assembled.fastq ${5}/${sample}.3trimmed.fastq
 fi
-# dereplicate
+echo "Dereplicating"
 usearch -fastx_uniques ${5}/${sample}.3trimmed.fastq -fastaout \
 ${5}/${sample}.trimmed.derep.fasta -sizeout
-# get lenghth distributions
-length_stats ${5}/${sample}.trimmed.derep.fasta ${5}/${6}
-# get stats for all the steps
-seqkit -j ${8} stats ${5}/*${sample}*.fa* > ${5}/${6}.stats
+echo "Extimating lenghth distributions"
+length__stats ${5}/${sample}.trimmed.derep.fasta ${5}/${6}
+echp "estimating stats for all the steps"
+seqkit -j ${8} stats ${5}/*${sample}*.fa* >> ${5}/${6}.stats
 # run a fastqc
+echo "Running fastqc"
 fastqc ${5}/${sample}.3trimmed.fastq -o ${5}
 }
 
@@ -128,7 +131,7 @@ do
 done <${file_list}
 
 
-# Trim the reads to expected lenght
+echo "Trimming the reads to expected lenght"
 for i in ${outdir}/*3trimmed.fastq
 do
     cat ${i} | seqkit -j ${cpus} seq -m ${min_len} \
@@ -138,36 +141,35 @@ done
 # Concatenate all resulting files
 cat ${outdir}/*.lengthfilter.fastq > ${outdir}/all.lengthfilter.fastq
 
-# Dereplicate on full set reporting size of identical sequences
+echp "Dereplicating on full set reporting size of identical sequences"
 vsearch --derep_fulllength  ${outdir}/all.lengthfilter.fastq -sizein -sizeout \
 -relabel Uniq -output  ${outdir}/vs_all_lengthfilter.fasta
 
-# execute denoising in full file
+echo "executing the denoising in full file"
 usearch -unoise3 ${outdir}/vs_all_lengthfilter.fasta -zotus \
 ${outdir}/all_lengthfilter_zotus_${9}.fasta -minsize ${9} -tabbedout \
 ${outdir}/allzotus_lengthfilter_${9}.txt
 
-# Rename to Zotu
+echo "Renaming to Zotu"
 sed -i "s/>O/>Zo/g" ${outdir}/all_lengthfilter_zotus_${9}.fasta
 
-# reannotate each sample
+echp "Reannotating each sample"
 for i in ${outdir}/*lengthfilter.fastq
 do
     usearch -fastx_relabel ${i} -prefix `basename ${i%%.lengthfilter.fastq}`_ \
     -fastqout ${i%%.fastq}_relabel.fastq -keep_annots
 done
 
-# Make database with the joined file
+echo "Creating usearch database with the joined file"
 usearch -makeudb_usearch ${outdir}/all_lengthfilter_zotus_${9}.fasta -output \
 ${outdir}/all_lengthfilter_zotus_${9}.udb
-
 
 cat ${outdir}/*lengthfilter_relabel.fastq > ${outdir}/all.lengthfilter_relabel.fastq
 
 # get file_size
 file_size=`du -b ${outdir}/all.lengthfilter_relabel.fastq|cut -f1`
 file_size=$(( file_size / 1000000000 ))
-# Run the unoise3 denoising
+echo "Running unoise3 denoising"
 if [[ "$file_size" -gt 3 ]]
     then
         fil=${outdir}/vs_all_lengthfilter.fasta
