@@ -118,7 +118,7 @@ usearch -fastx_uniques ${5}/${sample}.3trimmed.fastq -fastaout \
 ${5}/${sample}.trimmed.derep.fasta -sizeout
 echo "Extimating lenghth distributions"
 length__stats ${5}/${sample}.trimmed.derep.fasta ${5}/${6}
-echp "estimating stats for all the steps"
+echo "estimating stats for all the steps"
 seqkit -j ${8} stats ${5}/*${sample}*.fa* >> ${5}/${6}.stats
 # dereplicate
 echo -e "\tRemoving duplicate sequences"
@@ -149,12 +149,13 @@ fi
 # get lenghth distributions
 length_stats ${5}/${sample}.trimmed.derep.fasta ${5}/${6}
 # get stats for all the steps
-seqkit -j ${8} stats ${5}/*${sample}*.fa* > ${5}/${6}.stats
+seqkit -j ${8} stats ${5}/*${sample}*.fa* >> ${5}/${6}.stats
 # run a fastqc
 echo "Running fastqc"
 fastqc ${5}/${sample}.3trimmed.fastq -o ${5}
 #fastqc ${5}/${sample}.3trimmed.fastq -o ${5}
-echo -e "\n\n"}
+echo -e "\n\n"
+}
 
 prog() {
     # Progress bar, courtesy of ilkkachu (stackoverflow)
