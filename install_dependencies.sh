@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 cwd=${PWD}
 echo "Preparing cutadapt"
-python -m pip install --user --upgrade cutadapt --user
+python -m pip uninstall cutadapt
+python -m pip --user 'cutadapt==1.18'
 
 echo "Preparing vsearch"
 git clone https://github.com/torognes/vsearch.git
