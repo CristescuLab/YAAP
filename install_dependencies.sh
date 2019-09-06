@@ -6,16 +6,20 @@ python -m pip uninstall cutadapt
 python -m pip install --user 'cutadapt==1.18'
 
 echo "Preparing vsearch"
-git clone https://github.com/torognes/vsearch.git
-cd vsearch
-./autogen.sh
-./configure --prefix=${PWD} --exec-prefix=${PWD}
-make
-cd bin
-chmod +x vsearch
-cp vsearch ${cwd}/executables_linux_64/
-cd ${cwd}
-
+if [[ ! -f ${cwd}/executables_linux_64/vsearch ]]
+then
+  git clone https://github.com/torognes/vsearch.git
+  cd vsearch
+  ./autogen.sh
+  ./configure --prefix=${PWD} --exec-prefix=${PWD}
+  make
+  cd bin
+  chmod +x vsearch
+  cp vsearch ${cwd}/executables_linux_64/
+  cd ${cwd}
+else
+  echo "vsearch already in path"
+fi
 echo "Setting up seqkit, pear and usearch "
 cp $1 executables_linux_64/usearch
 cd executables_linux_64
