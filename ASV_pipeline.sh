@@ -50,7 +50,7 @@ lt = sum([x[1] for x in c.items() if x[0] < mc ])
 line = '\n%d sequences are longer than the mode\n%d sequences are ' \
        'shorter than the mode' % (gt, lt)
 sor = sorted(c.items(), key=lambda x: x[0])
-with open('${2}_distribution.txt', 'w') as F:
+with open('${2}_distribution.txt', 'a+') as F:
     F.write('\n'.join(['%d:%d' % x for x in sor]))
     F.write(line)
 EOF
@@ -183,7 +183,8 @@ Adapter1rc=`echo $ADAPTER_FWD | tr 'ACGTYRSWKMBDHV' 'TGCARYSWMKVHDB' | rev`
 Adapter2rc=`echo $ADAPTER_REV | tr 'ACGTYRSWKMBDHV' 'TGCARYSWMKVHDB' | rev`
 # create output folder
 mkdir -p ${outdir}
-
+echo "" > ${outdir}/${prefix}.stats
+echo "" > ${outdir}/${prefix}_distribution.txt
 # run QC in all pairs
 while read line
 do
