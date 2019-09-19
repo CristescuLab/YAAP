@@ -164,6 +164,14 @@ prog() {
     printf "\r\e[K|%-*s| %3d %% %s" "$w" "$dots" "$p" "$*";
 }
 
+fastx_relabel() {
+# 1. *.lengthfilter.fastq file
+i=${1}
+prefix=`basename ${i%%.lengthfilter.fastq}`_
+awk -v l="$prefix" 'BEGIN { cntr = 0 } /^@[A-Z][0-9]{5}:.{3}:*:*[:space:]*/ { \
+cntr++ ; print l, cntr } !/^@[A-Z][0-9]{5}:.{3}:*:*[:space:]*/ \
+{ print $0 }' > ${i%%.fastq}_relabel.fastq
+}
 # Get the command line arguments
 file_list=$1
 ADAPTER_FWD=$2
@@ -192,7 +200,7 @@ do
     ${Adapter1rc} ${outdir} ${prefix} ${line} ${cpus} ${min_read_len}
 done <${file_list}
 
-# Trim the reads to expected lenght
+# Trim the reads to expected length
 echo "Trimming all samples between ${min_len} and ${max_len}"
 n=`ls ${outdir}/*3trimmed.fastq| wc -l`
 perc=0
@@ -232,9 +240,11 @@ for i in ${outdir}/*lengthfilter.fastq
 do
     let perc++
     prog $(( (perc * 100) / n ))
-    usearch -fastx_relabel ${i} -prefix `basename ${i%%.lengthfilter.fastq}`_ \
-    -fastqout ${i%%.fastq}_relabel.fastq -keep_annots
+#    usearch -fastx_relabel ${i} -prefix `basename ${i%%.lengthfilter.fastq}`_ \
+#    -fastqout ${i%%.fastq}_relabel.fastq -keep_annots
+    fastx_relabel ${i}
 done
+
 
 # Make database with the joined file
 echo -e "\n\nCreating usearch database"
