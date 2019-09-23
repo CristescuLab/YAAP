@@ -240,9 +240,9 @@ for i in ${outdir}/*lengthfilter.fastq
 do
     let perc++
     prog $(( (perc * 100) / n ))
-#    usearch -fastx_relabel ${i} -prefix `basename ${i%%.lengthfilter.fastq}`_ \
-#    -fastqout ${i%%.fastq}_relabel.fastq -keep_annots
-    fastx_relabel ${i}
+    usearch -fastx_relabel ${i} -prefix `basename ${i%%.lengthfilter.fastq}`_ \
+    -fastqout ${i%%.fastq}_relabel.fastq -keep_annots
+    #fastx_relabel ${i}
 done
 
 
