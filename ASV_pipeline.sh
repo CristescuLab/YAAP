@@ -61,7 +61,7 @@ run_QC_single_pair(){
 # 1) Forward primer
 # 2) Reverse primer
 # 3) Reverse complement of reverse primer
-# 4) Reverse complement of reverse primer
+# 4) Reverse complement of forward primer
 # 5) Path to output directory
 # 6) prefix of output
 # 7) Prefix of the fileset
@@ -116,9 +116,9 @@ fi
 echo "Dereplicating"
 usearch -fastx_uniques ${5}/${sample}.3trimmed.fastq -fastaout \
 ${5}/${sample}.trimmed.derep.fasta -sizeout
-echo "Extimating lenghth distributions"
+echo "Estimating length distributions"
 length_stats ${5}/${sample}.trimmed.derep.fasta ${5}/${6}
-echo "estimating stats for all the steps"
+echo "Estimating stats for all the steps"
 seqkit -j ${8} stats ${5}/*${sample}*.fa* >> ${5}/${6}.stats
 # dereplicate
 echo -e "\tRemoving duplicate sequences"
