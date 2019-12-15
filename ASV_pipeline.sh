@@ -66,7 +66,7 @@ run_QC_single_pair(){
 # 6) prefix of output
 # 7) Prefix of the fileset
 # 8) cpus
-# 9) minimum read lenght
+# 9) minimum read length
 
 # run first cutadapt
 fileset=`basename ${7}`
@@ -85,10 +85,10 @@ else
     ${7}_R2.fastq.gz > ${5}/${sample}.log1
 fi
 # Merge reads
-echo "Running cutadapt"
-pear -f ${5}/${sample}.1.fastq.gz -r ${5}/${sample}.2.fastq.gz \
--o ${5}/${sample}_pear -q 25 -t $9 -s 2 > ${5}/${sample}_pear.log
-echo "Checking if any adapters remain"
+#echo "Running pear"
+#pear -f ${5}/${sample}.1.fastq.gz -r ${5}/${sample}.2.fastq.gz \
+#-o ${5}/${sample}_pear -q 25 -t $9 -s 2 > ${5}/${sample}_pear.log
+#echo "Checking if any adapters remain"
 if [[ -s ${5}/${sample}_pear.assembled.fastq ]]
 then
     echo -e "\t\tFile ${5}/${sample}_pear.assembled.fastq exist and is not empty... Skipping"
