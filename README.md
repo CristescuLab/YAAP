@@ -39,9 +39,11 @@ git clone https://github.com/CristescuLab/YAAP.git
 cd YAAP
 ```
 2.  Because of the licence in usearch I am not allowed to distribute the binary.
-So you will need to visit [https://drive5.com/usearch/download.html]() download 
+So you will need to visit [https://drive5.com/usearch/download.html](
+https://www.drive5.com/usearch/) download 
 the latest LINUX version from your email, and place it in this folder (the YAAP 
 folder)
+
 4. Execute the `install_dependencies.sh` code:
 ```bash
 bash install_dependencies.sh <name of usearch binary>
