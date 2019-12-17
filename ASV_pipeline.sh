@@ -25,6 +25,7 @@
 # 7) GNU parallel
 
 #set -e
+source ${HOME}/.bashrc
 # some functions
 length_stats(){
 python - << EOF

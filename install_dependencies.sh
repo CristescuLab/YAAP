@@ -25,6 +25,6 @@ cp $1 executables_linux_64/usearch
 cd executables_linux_64
 chmod +x *
 echo "export PATH=$PATH:$PWD" >> ${HOME}/.bashrc
-source ${HOME}/.bashrc
-. ${HOME}/.bashrc
+source "${HOME}"/.bashrc
+. "${HOME}"/.bashrc
 cd ${cwd}
