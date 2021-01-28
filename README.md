@@ -3,6 +3,19 @@ Yet Another Amplicon denoising Pipeline (YAAP), is a pipeline to analyse
 metabarcoding amplicon data. It performs QC, adapter removal, denoising and 
 ZOTU table construction
 
+Table of Contents
+=================
+
+   * [YAAP](#yaap)
+      * [Dependencies](#dependencies)
+         * [Installation of dependencies](#installation-of-dependencies)
+            * [<strong>The easier (no gurarantees) way</strong>](#the-easier-no-gurarantees-way)
+         * [<strong>The not so easy, but easy way</strong>](#the-not-so-easy-but-easy-way)
+            * [Linking files to your bin directory (REQUIRES ADMIN PRIVILEGES )](#linking-files-to-your-bin-directory-requires-admin-privileges-)
+            * [Exporting the path](#exporting-the-path)
+      * [Usage](#usage)
+      * [ISSUES](#issues)
+
 ## Dependencies
 This pipeline makes use of the following programs:
 1. cutadapt ([https://cutadapt.readthedocs.io/en/stable/index.html](
