@@ -9,7 +9,7 @@ Table of Contents
    * [YAAP](#yaap)
       * [Dependencies](#dependencies)
          * [Installation of dependencies](#installation-of-dependencies)
-            * The easier (no gurarantees) way](#the-easier-no-gurarantees-way)
+            * [The easier (no gurarantees) way](#the-easier-no-gurarantees-way)
          * [The not so easy, but easy way](#the-not-so-easy-but-easy-way)
             * [Linking files to your bin directory (REQUIRES ADMIN PRIVILEGES )](#linking-files-to-your-bin-directory-requires-admin-privileges-)
             * [Exporting the path](#exporting-the-path)
