@@ -125,6 +125,7 @@ YAAP has a single bash script called ASV_pipeline.sh. It requires 8 arguments:
 6. Number of cpus to use
 7. Minimum amplicon length
 8. Maximum amplicon length
+9. Unoise minimum abundance parameter
 
 This pipeline assumes that your files are names fileset_prefix_R1.fastq.gz and 
 fileset_prefix_R2.fastq.gz for all the samples. It also assumes that you have 
