@@ -28,6 +28,7 @@ https://bioinf.shenwei.me/seqkit/))
 https://cme.h-its.org/exelixis/web/software/pear/))
 5. usearch ([https://www.drive5.com/usearch/](
 https://www.drive5.com/usearch/))
+6. fastqc ([https://www.bioinformatics.babraham.ac.uk/projects/fastqc/](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
 
 This git contains the binaries (executables) of pear, seqkit, and usearch, 
 however, vsearch and cutadapt have to be installed locally.
